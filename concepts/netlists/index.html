@@ -1,0 +1,2300 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Differentiable circuit simulation on JAX">
+      
+      
+      
+        <link rel="canonical" href="https://voltax.jkapoor.me/concepts/netlists/">
+      
+      
+        <link rel="prev" href="../custom-elements/">
+      
+      
+        <link rel="next" href="../verilog-a/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/voltax.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SPICE netlists - Voltax</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spice-netlists" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Voltax" class="md-header__button md-logo" aria-label="Voltax" data-md-component="logo">
+      
+  <img src="../../assets/voltax.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Voltax
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SPICE netlists
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jaivardhankapoor/voltax" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jaivardhankapoor/voltax
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Voltax" class="md-nav__button md-logo" aria-label="Voltax" data-md-component="logo">
+      
+  <img src="../../assets/voltax.svg" alt="logo">
+
+    </a>
+    Voltax
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jaivardhankapoor/voltax" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jaivardhankapoor/voltax
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../circuits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building circuits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The circuit equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../measurements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Measurements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradients and optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing your own element
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPICE netlists
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPICE netlists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported syntax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions and parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subcircuits-with-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subcircuits with parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#includes-and-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Includes and libraries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugging-in-your-own-models-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugging in your own models (models=)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavioral sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-pdk-model-decks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-PDK model decks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differences-from-ngspice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differences from ngspice
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../verilog-a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog-A compact models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/01_rc_fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01. RC fitting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/02_netlist_cmos_inverter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02. Netlist CMOS inverter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/03_opamp_filter_design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03. Op-amp filter design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/04_adder_4bit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04. 4-bit adder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/05_power_grid_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05. Power grid optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/06_topology_discovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06. Topology discovery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/07_logic_design_space/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07. Logic design space
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/08_ring_osc_inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08. Ring oscillator inference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/09_rc_smc_inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09. RC SMC inference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/10_custom_element/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Custom element
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/11_mnist_analog_cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. MNIST analog CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/12_energy_delay_optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Energy-delay optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/13_battery_ecm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Battery equivalent circuit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/circuits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Circuits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/measure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Measurements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/signals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/va/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog-A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported syntax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions and parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subcircuits-with-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subcircuits with parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#includes-and-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Includes and libraries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugging-in-your-own-models-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugging in your own models (models=)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavioral sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-pdk-model-decks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-PDK model decks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differences-from-ngspice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differences from ngspice
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="spice-netlists">SPICE netlists<a class="headerlink" href="#spice-netlists" title="Permanent link">&para;</a></h1>
+<p><code>vx.parse_netlist(text)</code> turns a SPICE deck into a <code>Circuit</code>;
+<code>vx.parse_netlist_file(path)</code> reads a file (whose first line is a title,
+following SPICE). Device and node names are kept as written, so you address
+results exactly as in the deck:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">voltax</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vx</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">c</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="s2">* two-stage RC with a buffer</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s2">.param r1=1k</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s2">V1 in 0 PULSE(0 1 0 1n 1n 5u 10u) AC 1</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s2">R1 in a </span><span class="si">{r1}</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s2">C1 a 0 1n</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s2">E1 b 0 a 0 1</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s2">R2 b out 2k</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s2">C2 out 0 1n</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s2">"""</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">sol</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">transient</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">20e-6</span><span class="p">,</span> <span class="mi">401</span><span class="p">))</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s2">"out"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">vx</span><span class="o">.</span><span class="n">ac</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1e5</span><span class="p">]))</span><span class="o">.</span><span class="n">db</span><span class="p">(</span><span class="s2">"out"</span><span class="p">))</span>
+</code></pre></div>
+<p>The parser is written for real-world decks: foundry model libraries
+(<code>.lib</code> corners, <code>.include</code> trees, thousands of <code>.param</code> expressions,
+binned model cards) and typical ngspice testbenches. Its results are
+checked against ngspice-42 in <code>benchmarks/benchmark_netlists.py</code>.</p>
+<h2 id="supported-syntax">Supported syntax<a class="headerlink" href="#supported-syntax" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>element</th>
+<th>syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resistor, capacitor, inductor</td>
+<td><code>R1 a b 1k</code>, <code>R1 a b r={expr}</code>, <code>R1 a b rmod l=10u w=1u</code> (model <code>r(rsh)</code>), <code>C1 a b 10p</code>, <code>L1 a b 1u</code>; <code>m=</code> on all three</td>
+</tr>
+<tr>
+<td>coupled inductors</td>
+<td><code>K1 L1 L2 0.99</code> (merged into a <code>Transformer</code>)</td>
+</tr>
+<tr>
+<td>voltage / current source</td>
+<td><code>V1 a b [DC] 1.2 [AC mag [phase]] [waveform]</code>, in any order; waveforms <code>PULSE SIN EXP PWL SFFM AM</code>, see <a href="#sources">below</a></td>
+</tr>
+<tr>
+<td>diode</td>
+<td><code>D1 a k [model] [area]</code>, model <code>d(is n cjo tt rs)</code></td>
+</tr>
+<tr>
+<td>BJT</td>
+<td><code>Q1 c b e [s] [model] [area]</code>, model <code>npn</code>/<code>pnp</code> <code>(is bf br vaf tf tr cje cjc)</code></td>
+</tr>
+<tr>
+<td>MOSFET</td>
+<td><code>M1 d g s b model [w=] [l=] [m=] [nf=] [ad= as= pd= ps= nrd= nrs= ...]</code>, model <code>nmos</code>/<code>pmos</code> <code>(level kp vto lambda n gamma phi tox cgso cgdo)</code></td>
+</tr>
+<tr>
+<td>VCVS, VCCS</td>
+<td><code>E1 p n cp cn gain</code>, <code>G1 p n cp cn gm</code></td>
+</tr>
+<tr>
+<td>CCCS, CCVS</td>
+<td><code>F1 p n Vsense gain</code>, <code>H1 p n Vsense r</code></td>
+</tr>
+<tr>
+<td>behavioral</td>
+<td><code>B1 p n V={expr}</code> / <code>I={expr}</code>; <code>E1 p n value={expr}</code> (or <code>vol=</code>), <code>G1 p n value={expr}</code> (or <code>cur=</code>); <code>E</code>/<code>G</code> <code>TABLE {expr} = (x, y) ...</code>; <code>E</code>/<code>G</code>/<code>F</code>/<code>H</code> <code>POLY(n) ...</code></td>
+</tr>
+<tr>
+<td>switch</td>
+<td><code>S1 p n cp cn [model]</code>, model <code>sw(ron roff vt vh)</code></td>
+</tr>
+<tr>
+<td>subcircuit</td>
+<td><code>.subckt name pins... [params:] k=v ...</code> / <code>.ends</code>, instantiated with <code>X1 nodes... name [k=v ...] [m=]</code></td>
+</tr>
+<tr>
+<td>compiled device</td>
+<td><code>N1 nodes... model [k=v ...]</code> (ngspice OSDI / Verilog-A, e.g. <code>.model nch psp103va</code>); mapped with <a href="#plugging-in-your-own-models-models"><code>models=</code></a>, MOSFET cards (<code>type=+1/-1</code>) otherwise fall back to the builder's model</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>directive</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.param a=1 b={2*a}</code>, <code>.func f(x)={x*x}</code></td>
+<td>parameters and user functions, any order, scoped (below)</td>
+</tr>
+<tr>
+<td><code>.include file</code>, <code>.lib file section</code>, <code>.lib section</code> ... <code>.endl</code></td>
+<td>file inclusion and library corners</td>
+</tr>
+<tr>
+<td><code>.model name type (k=v ...)</code>, <code>name.1</code>, <code>name.2</code>, ...</td>
+<td>model cards, with expressions and geometry bins</td>
+</tr>
+<tr>
+<td><code>.if (cond)</code> / <code>.elseif</code> / <code>.else</code> / <code>.endif</code></td>
+<td>conditional element lines and <code>.param</code>s, nested; conditions use the enclosing subcircuit instance's parameters</td>
+</tr>
+<tr>
+<td><code>.global n1 n2</code></td>
+<td>nodes shared by all subcircuit instances</td>
+</tr>
+<tr>
+<td><code>.options scale= defw= defl= temp= tnom=</code>, <code>.temp</code></td>
+<td>geometry scale, default W/L, temperature</td>
+</tr>
+<tr>
+<td><code>.tran tstep tstop</code></td>
+<td>supplies SPICE's default <code>PULSE</code>/<code>SIN</code>/<code>EXP</code>/<code>SFFM</code> timings</td>
+</tr>
+<tr>
+<td><code>.end</code></td>
+<td>stops reading</td>
+</tr>
+</tbody>
+</table>
+<p>Analysis and output directives (<code>.tran</code>, <code>.ac</code>, <code>.dc</code>, <code>.op</code>, <code>.print</code>,
+<code>.meas</code>, <code>.control</code> blocks, ...) are otherwise skipped: run analyses from
+Python. Lines continue with a leading <code>+</code> or a trailing <code>\</code>; comments are
+<code>*</code> lines and inline <code>;</code>, <code>$</code> and <code>//</code>. Tabs and CRLF line endings are
+fine. Names are case-insensitive (the first spelling is kept). Values accept
+SPICE suffixes (<code>f p n u m k meg g t mil</code>) and ignore trailing units
+(<code>10pF</code>).</p>
+<p>Anything the parser does not understand raises <code>NetlistError</code> (a
+<code>ValueError</code>) that starts with the file and line, e.g.
+<code>cells.spice:12: M3: unknown model 'nch_lvt'</code>. Voltax never silently drops
+part of your circuit.</p>
+<h2 id="expressions-and-parameters">Expressions and parameters<a class="headerlink" href="#expressions-and-parameters" title="Permanent link">&para;</a></h2>
+<p>An expression can appear wherever a value can: element values, model
+parameters, instance and subcircuit parameters, source arguments. Write it in
+braces <code>{...}</code> or single quotes <code>'...'</code> (inside <code>.param</code> lines plain
+<code>a = b * 2</code> works too). The language is SPICE's:</p>
+<ul>
+<li>arithmetic <code>+ - * / %</code>, power <code>**</code> or <code>^</code>, comparisons <code>&lt; &lt;= &gt; &gt;= == !=</code>,
+  logic <code>&amp;&amp; || !</code> and the ternary <code>c ? a : b</code>;</li>
+<li>functions <code>sqrt exp log ln log10 pow pwr abs min max sin cos tan asin acos
+  atan atan2 sinh cosh tanh floor ceil int nint sgn sign if limit u uramp</code>
+  (<code>log</code> is the natural log, as in ngspice), the constant <code>pi</code>;</li>
+<li><code>agauss</code>, <code>gauss</code>, <code>aunif</code>, <code>unif</code> evaluate to their nominal value, so
+  Monte-Carlo-ready foundry decks parse (sample mismatch in Python instead);</li>
+<li>numbers with SPICE suffixes, e.g. <code>{2*10u}</code>.</li>
+</ul>
+<p>Parameters may reference each other in any order; a cycle is an error.
+<code>.func</code> defines functions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">c</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="s2">.param rload = 'rbase * ratio' ratio = {vdd &gt; 1 ? 2 : 1}</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s2">.param rbase=500 vdd=1.2</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="s2">.func par(a, b) = a * b / (a + b)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="s2">V1 in 0 </span><span class="si">{vdd}</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s2">R1 in out {par(rload, rload)}</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s2">R2 out 0 1k</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s2">"""</span><span class="p">,</span> <span class="n">return_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">vx</span><span class="o">.</span><span class="n">dc</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s2">"out"</span><span class="p">))</span>
+</code></pre></div>
+<p>prints <code>{'rload': 1000.0, 'ratio': 2.0, 'rbase': 500.0, 'vdd': 1.2}</code>: <code>R1</code>
+is two 1 kΩ in parallel, so <code>out</code> sits at 0.8 V.</p>
+<h2 id="subcircuits-with-parameters">Subcircuits with parameters<a class="headerlink" href="#subcircuits-with-parameters" title="Permanent link">&para;</a></h2>
+<p>Subcircuit parameters are declared on the <code>.subckt</code> line (with or without
+<code>params:</code>), and their defaults may use other parameters. An instance
+overrides them, evaluated in the <em>caller's</em> scope. Lookup goes from the
+instance to its parent instance up to the global <code>.param</code>s, so a nested
+subcircuit sees the parameters of the instance that contains it. <code>m=</code> on an
+instance means <code>m</code> parallel copies of the whole subcircuit: resistances
+divide, capacitances and transistor widths multiply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">divider</span> <span class="o">=</span> <span class="s2">"""</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s2">.param rtop=3k</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s2">.subckt div top bot out params: ra=1k rb={2*ra}</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s2">R1 top out </span><span class="si">{ra}</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s2">R2 out bot </span><span class="si">{rb}</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s2">.ends div</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s2">V1 in 0 3</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s2">X1 in 0 a div</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s2">X2 in 0 b div ra=2k</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s2">X3 in 0 c div ra=</span><span class="si">{rtop}</span><span class="s2"> rb=1k m=2</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s2">"""</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">c</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="n">divider</span><span class="p">)</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">sol</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">dc</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="nb">print</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="s2">"abc"</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"X3.R1"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)))</span>
+</code></pre></div>
+<p><code>a</code> and <code>b</code> both divide 3 V by 1:2 (<code>rb</code> follows <code>ra</code>), <code>c</code> by 3:1, and
+<code>X3.R1</code> is the 3 kΩ resistor halved by <code>m=2</code>.</p>
+<h2 id="includes-and-libraries">Includes and libraries<a class="headerlink" href="#includes-and-libraries" title="Permanent link">&para;</a></h2>
+<p><code>.include file</code> inlines a file; <code>.lib file section</code> inlines one
+<code>.lib section</code> ... <code>.endl</code> block of a library file (corner selection, e.g.
+<code>tt</code>, <code>ff</code>, <code>ss</code>). Relative paths resolve against the including file's
+directory (<code>parse_netlist_file</code>), or against <code>base_dir=</code> for
+<code>parse_netlist</code>. A file or section is inlined once per definition context:
+a repeated top-level include is a no-op, but a file included inside several
+<code>.subckt</code> bodies (as IHP does with its model cards) is inlined into each.
+Recursion raises an error. Parameters are evaluated when used, so a
+parameter file may be included before or after the library that uses it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">lib</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">())</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">(</span><span class="n">lib</span> <span class="o">/</span> <span class="s2">"models.lib"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s2">.lib tt</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s2">.param dvt=0</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s2">.lib models.lib mos</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="s2">.endl tt</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s2">.lib ff</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="s2">.param dvt=-0.05</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="s2">.lib models.lib mos</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="s2">.endl ff</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="s2">.lib mos</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="s2">.model nch nmos (level=1 kp=200u vto={0.45 + dvt} lambda=0.05)</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="s2">.endl mos</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="s2">"""</span><span class="p">)</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">deck</span> <span class="o">=</span> <span class="s2">"""</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="s2">.lib models.lib </span><span class="si">{corner}</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="s2">Vd d 0 1</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="s2">Vg g 0 0.8</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="s2">M1 d g 0 0 nch w=2u l=0.5u</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="s2">"""</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tt"</span><span class="p">,</span> <span class="s2">"ff"</span><span class="p">):</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    <span class="n">c</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="n">deck</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">corner</span><span class="o">=</span><span class="n">corner</span><span class="p">),</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">lib</span><span class="p">)</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">corner</span><span class="p">,</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">vx</span><span class="o">.</span><span class="n">dc</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">i</span><span class="p">(</span><span class="s2">"Vd"</span><span class="p">)))</span>
+</code></pre></div>
+<p>prints the drain current in each corner: the <code>ff</code> threshold is 50 mV lower,
+so it conducts more.</p>
+<h2 id="models">Models<a class="headerlink" href="#models" title="Permanent link">&para;</a></h2>
+<p>A MOSFET card with <code>level=1</code> uses <code>Level1MOSFET</code> (or the builder's
+<code>mos_model</code> if that is a Level-1 variant, e.g.
+<code>functools.partial(vx.Level1MOSFET, smooth=0.0)</code> for the exact SPICE
+model). Without <code>level</code>, the builder's default model (<code>EKVMOSFET</code>) is used.
+Any other level (BSIM4 <code>level=54</code>, PSP <code>level=103</code>, ...) falls back to the
+builder's default model with a warning, unless you register a model for it
+(next section). Parameters that the chosen model does not use trigger a
+warning rather than being dropped silently. All devices that reference the
+same card share one <code>MOSProcess</code>, so its gradient aggregates across them.</p>
+<p><code>return_info=True</code> also returns a <code>NetlistInfo</code>: the files read, the
+parameters, and how every <code>.model</code> card maps:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">)</span>  <span class="c1"># the level-54 card warns</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">c</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s2">.model n1 nmos level=1 kp=100u</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s2">.model nbsim nmos level=54 version=4.5 vth0=0.4</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s2">.model dd d is=1e-15</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s2">V1 d 0 1</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s2">M1 d d 0 0 n1</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s2">"""</span><span class="p">,</span> <span class="n">return_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">model_report</span><span class="p">())</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>type   level  status      cards  implementation
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>d      -      native          1  Diode
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>nmos   1      native          1  Level1MOSFET
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>nmos   54     fallback        1  EKVMOSFET (level 54 not implemented)
+</code></pre></div>
+<h3 id="binning">Binning<a class="headerlink" href="#binning" title="Permanent link">&para;</a></h3>
+<p>Foundry decks split a model into geometry bins, <code>nch.1</code>, <code>nch.2</code>, ...,
+each valid for <code>lmin &lt;= L &lt;= lmax</code>, <code>wmin &lt;= W &lt;= wmax</code>. A device that
+references <code>nch</code> gets the bin its (scaled) geometry falls in, exactly as
+ngspice-42 chooses it. Edges have a 1 nm tolerance and the last-defined
+matching bin wins, so a device on a shared edge gets the upper bin. W is per
+finger (<code>w/nf</code>).
+<code>info.devices</code> records the choice and the device's relative distance to the
+nearest edge it shares with another bin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">c</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s2">.model nch.1 nmos (level=1 kp=300u vto=0.40 lmin=0.1u lmax=1u wmin=0.1u wmax=100u)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s2">.model nch.2 nmos (level=1 kp=250u vto=0.45 lmin=1u lmax=10u wmin=0.1u wmax=100u)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s2">V1 d 0 1</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s2">M1 d d 0 0 nch w=2u l=0.5u</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s2">M2 d d 0 0 nch w=2u l=2u</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s2">"""</span><span class="p">,</span> <span class="n">return_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"M1"</span><span class="p">,</span> <span class="s2">"M2"</span><span class="p">):</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">card</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">margin</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Binning makes W/L gradients piecewise</p>
+<p>The bin is chosen once, at parse time. Gradients with respect to a
+device's <code>w</code>/<code>l</code> are those of the chosen bin's model: they do not see the
+jump to the neighbouring bin's parameters when an optimizer moves the
+geometry across an edge. Check <code>info.devices[name].margin</code> (the parser
+warns when a device is within 1% of a shared edge), and re-parse with
+the optimized geometry to pick up the right bin.</p>
+</div>
+<h3 id="plugging-in-your-own-models-models">Plugging in your own models (<code>models=</code>)<a class="headerlink" href="#plugging-in-your-own-models-models" title="Permanent link">&para;</a></h3>
+<p><code>parse_netlist(text, models={key: factory})</code> maps model cards to your own
+<code>Element</code> classes, e.g. a compiled BSIM4. Keys are matched
+case-insensitively, most specific first:</p>
+<ol>
+<li>the model name a device references (<code>"nch"</code>) or its bin (<code>"nch.3"</code>),</li>
+<li><code>"&lt;type&gt;:&lt;level&gt;:&lt;version&gt;"</code>, e.g. <code>"nmos:54:4.5"</code>,</li>
+<li><code>"&lt;type&gt;:&lt;level&gt;"</code>, e.g. <code>"nmos:54"</code>, <code>"pmos:54"</code>, <code>"d:3"</code>,</li>
+<li><code>"&lt;type&gt;"</code>, e.g. <code>"nmos"</code>.</li>
+</ol>
+<p>The factory is called as <code>factory.from_netlist(spec)</code> if it has that method
+(e.g. a classmethod), otherwise as <code>factory(spec)</code>, and returns one
+single-device <code>Element</code> whose nodes are <code>spec.nodes</code>. <code>spec</code> is a
+<code>voltax.netlist.DeviceSpec</code>:</p>
+<table>
+<thead>
+<tr>
+<th>field</th>
+<th>content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>hierarchical device name, <code>"X1.M3"</code></td>
+</tr>
+<tr>
+<td><code>letter</code></td>
+<td><code>"m"</code>, <code>"d"</code>, <code>"q"</code> or <code>"n"</code> (hooks apply to these elements; <code>N</code> requires one)</td>
+</tr>
+<tr>
+<td><code>nodes</code></td>
+<td>terminal node names: <code>(d, g, s, b)</code>, <code>(a, k)</code>, <code>(c, b, e[, s])</code>, or all nodes of an <code>N</code> device</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>the bin-selected <code>ModelCard</code>: <code>name</code>, <code>base</code>, <code>type</code>, <code>level</code>, <code>version</code>, <code>params</code> (all evaluated, lower-case keys), <code>text</code> (raw values)</td>
+</tr>
+<tr>
+<td><code>instance</code></td>
+<td>evaluated instance parameters: MOSFETs get <code>w</code>, <code>l</code> (and <code>ad as pd ps</code>) with <code>.option scale</code> applied, <code>m</code> (instance times subcircuit multiplier), and everything else as written (<code>nf</code>, <code>nrd</code>, <code>sa</code>, ...); diodes and BJTs get <code>area</code> and <code>m</code></td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>.options</code> values plus <code>temp</code> (°C, default 27)</td>
+</tr>
+</tbody>
+</table>
+<p>All devices that use the same card receive the same <code>spec.model</code> object,
+so a factory can share process parameters (and their gradients) by caching
+on <code>spec.model.key</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyNMOS</span><span class="p">(</span><span class="n">vx</span><span class="o">.</span><span class="n">Level1MOSFET</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">processes</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_netlist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="n">p</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="n">key</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">key</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processes</span><span class="p">:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">MOSProcess</span><span class="p">(</span><span class="n">kp</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">"u0"</span><span class="p">]</span> <span class="o">*</span> <span class="mf">3.45e-11</span> <span class="o">/</span> <span class="n">p</span><span class="p">[</span><span class="s2">"toxe"</span><span class="p">],</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>                                               <span class="n">vth</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">"vth0"</span><span class="p">])</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        <span class="n">w</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">instance</span><span class="p">[</span><span class="s2">"w"</span><span class="p">]</span> <span class="o">*</span> <span class="n">spec</span><span class="o">.</span><span class="n">instance</span><span class="p">[</span><span class="s2">"m"</span><span class="p">]</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">instance</span><span class="p">[</span><span class="s2">"l"</span><span class="p">],</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="s2">"n"</span><span class="p">)</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="n">c</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s2">.model nch nmos level=54 version=4.5 vth0=0.42 u0=0.03 toxe=4n</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="s2">V1 d 0 1</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="s2">M1 d d 0 0 nch w=1u l=0.2u</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="s2">M2 d d 0 0 nch w=1u l=0.2u</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="s2">"""</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="p">{</span><span class="s2">"nmos:54"</span><span class="p">:</span> <span class="n">MyNMOS</span><span class="p">})</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="s2">"MyNMOS_n"</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="s2">"MyNMOS_n"</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="behavioral-sources">Behavioral sources<a class="headerlink" href="#behavioral-sources" title="Permanent link">&para;</a></h2>
+<p><code>B</code> elements and <code>E</code>/<code>G</code> with <code>value=</code> compile their expression into a
+JAX function, a <code>BehavioralSource</code> element. The expression may use node
+voltages <code>v(a)</code> and <code>v(a, b)</code>, the current through a voltage source
+<code>i(Vx)</code>, <code>time</code>, parameters and functions. <code>V=</code> sources set a voltage (with
+a branch current, like <code>E</code>), <code>I=</code> sources drive a current from <code>n+</code> through
+the source to <code>n-</code>. Parameters stay differentiable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">equinox</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">eqx</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">c</span> <span class="o">=</span> <span class="n">vx</span><span class="o">.</span><span class="n">parse_netlist</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s2">.param gm=2m vsat=0.5</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">V1 in 0 0.3</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s2">B1 0 out I={gm * vsat * tanh(v(in) / vsat)}</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s2">R1 out 0 1k</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s2">Bx x 0 V={2 * v(out) + 1k * i(V1)}</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="s2">Rx x 0 1k</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="s2">"""</span><span class="p">)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="n">group</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"B1"</span><span class="p">)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="n">grad</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_grad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">vx</span><span class="o">.</span><span class="n">dc</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s2">"out"</span><span class="p">))(</span><span class="n">c</span><span class="p">)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="nb">print</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">vx</span><span class="o">.</span><span class="n">dc</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s2">"out"</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grad</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">"gm"</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>
+<p><code>TABLE {expr} = (x1, y1) (x2, y2) ...</code> interpolates linearly (constant
+beyond the end points); <code>POLY(n)</code> builds the SPICE polynomial of <code>n</code>
+controlling voltages (<code>E</code>/<code>G</code>) or source currents (<code>F</code>/<code>H</code>).</p>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>waveform</th>
+<th>parameters (SPICE order)</th>
+<th>signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PULSE</code></td>
+<td><code>v1 v2 td tr tf pw per</code></td>
+<td><code>signals.Pulse</code></td>
+</tr>
+<tr>
+<td><code>SIN</code></td>
+<td><code>vo va freq td theta phase</code></td>
+<td><code>signals.Sine</code></td>
+</tr>
+<tr>
+<td><code>EXP</code></td>
+<td><code>v1 v2 td1 tau1 td2 tau2</code></td>
+<td><code>signals.Exp</code></td>
+</tr>
+<tr>
+<td><code>PWL</code></td>
+<td><code>t1 v1 t2 v2 ... [r=] [td=]</code>, or <code>PWL FILE=name</code> (pairs, <code>#</code> comments)</td>
+<td><code>signals.PWL</code></td>
+</tr>
+<tr>
+<td><code>SFFM</code></td>
+<td><code>vo va fc mdi fs [phase_c phase_s]</code></td>
+<td><code>signals.SFFM</code></td>
+</tr>
+<tr>
+<td><code>AM</code></td>
+<td><code>va vo mf fc td</code></td>
+<td><code>signals.AM</code></td>
+</tr>
+</tbody>
+</table>
+<p>Arguments may be expressions, with or without parentheses
+(<code>SIN 0 1 {f0}</code>). With a <code>.tran tstep tstop</code> line, omitted or zero
+arguments take SPICE's defaults (<code>tr = tf = tstep</code>, <code>pw = per = tstop</code>,
+<code>freq = 1/tstop</code>, <code>tau = tstep</code>); without it, <code>EXP</code> needs explicit time
+constants and <code>PULSE</code> falls back to <code>Pulse</code>'s defaults. A source has one
+waveform; with both a <code>DC</code> value and a waveform, the waveform is used (also
+at the operating point, as in ngspice's transient). <code>m=</code> multiplies current
+sources.</p>
+<h2 id="open-pdk-model-decks">Open-PDK model decks<a class="headerlink" href="#open-pdk-model-decks" title="Permanent link">&para;</a></h2>
+<p>Point the deck at the PDK's ngspice model library and select a corner,
+exactly as for ngspice:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sky130:     .lib "&lt;sky130_fd_pr&gt;/models/sky130.lib.spice" tt
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>            XM1 d g s b sky130_fd_pr__nfet_01v8 w=1 l=0.15     (W/L in um)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>gf180mcu:   .include "&lt;gf180mcu_fd_pr&gt;/models/ngspice/design.ngspice"
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>            .lib "&lt;gf180mcu_fd_pr&gt;/models/ngspice/sm141064.ngspice" typical
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>            M1 d g s b nmos_3p3 w=1u l=0.28u
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>ihp-sg13g2: .lib "&lt;IHP-Open-PDK&gt;/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib" mos_tt
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>            XM1 d g s b sg13_lv_nmos w=1u l=0.13u
+</code></pre></div>
+<p>and parse with <code>vx.parse_netlist(deck, return_info=True)</code>. The whole
+hierarchy parses: corner sections, nested includes, thousands of <code>.param</code>
+expressions (<code>agauss</code> at nominal), device subcircuit wrappers with
+<code>.option scale</code>, IHP's <code>.if</code> blocks and <code>N</code> (OSDI) devices, and binned
+cards. The bin chosen for each device matches ngspice-42; on a grid of
+geometries <code>benchmarks/benchmark_pdk_decks.py</code> finds 112/112 agreeing sky130
+devices and 98/98 gf180mcu devices.</p>
+<p>What does <em>not</em> exist yet is the transistor physics: the core MOSFETs are
+BSIM4 (<code>level=54</code>, sky130 and gf180mcu) or PSP 103 (Verilog-A, IHP), and
+Voltax falls back to <code>EKVMOSFET</code> with a warning, so currents are only
+qualitative unless you plug in the compiled BSIM4 (below). <code>info.model_report()</code> lists every card as <code>native</code> (resistors,
+capacitors, BJTs), <code>fallback</code> (BSIM4, PSP, level-3 diodes) or <code>hook</code>; plug
+real models in with <a href="#plugging-in-your-own-models-models"><code>models=</code></a>, e.g.
+<code>{"nmos:54": BSIM4, "pmos:54": BSIM4, "psp103va": PSP}</code>.</p>
+<h2 id="differences-from-ngspice">Differences from ngspice<a class="headerlink" href="#differences-from-ngspice" title="Permanent link">&para;</a></h2>
+<p>The parser follows ngspice-42 except where noted here:</p>
+<ul>
+<li><code>m=</code> on a subcircuit instance multiplies everything below it, including
+  nested subcircuit instances (HSPICE semantics); ngspice-42 only applies it
+  to the devices directly inside the instance.</li>
+<li><code>TABLE</code> interpolates linearly, as SPICE defines it; ngspice implements it
+  with the XSPICE <code>pwl</code> code model, which rounds the corners.</li>
+<li>Without <code>.temp</code>, devices use Voltax's 300 K thermal voltage (<code>VT_300K</code>);
+  ngspice defaults to 27 °C. Add <code>.temp 27</code> to match ngspice exactly.</li>
+<li>A MOSFET card without <code>level</code> uses the builder's default model
+  (<code>EKVMOSFET</code>), not Level 1.</li>
+<li>A dot-less <code>include "file"</code> line (found in the sky130_fd_pr repository) is
+  treated as <code>.include</code> with a warning, and skipped with a warning when the
+  file does not exist; ngspice rejects the line.</li>
+<li>An <code>N</code> device whose card has <code>type = +1/-1</code> (a Verilog-A MOSFET) falls back
+  to the builder's MOSFET model when no <code>models=</code> entry is given; ngspice
+  needs the compiled OSDI library.</li>
+<li>Built-in models ignore junction and layout parameters (<code>ad as pd ps nrd
+  nrs</code>, temperature coefficients); the parser warns once, listing them.</li>
+</ul>
+<p>Not supported (they raise an error): XSPICE <code>A</code> devices, transmission
+lines, <code>J</code>, <code>W</code>, <code>Z</code>, <code>U</code> and <code>O</code> elements, Laplace sources, <code>ddt()</code>/<code>idt()</code>
+in expressions, and <code>N</code> devices that are neither hooked nor recognizably a
+MOSFET.</p>
+<p>Foundry BSIM4 cards (<code>level=54</code>) can use the compiled Verilog-A BSIM4 through
+the <code>models=</code> hook, <code>parse_netlist(text, models=vx.va.ngspice_bsim4_models())</code>
+(BSIM4 configured like ngspice's; the Verilog-A source is fetched on first
+use). On the sky130 and gf180mcu decks it reproduces ngspice's drain
+currents to ~1e-14. See <a href="../verilog-a/#pdk-model-decks-sky130-gf180mcu">Verilog-A compact models</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../custom-elements/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Writing your own element">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Writing your own element
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../verilog-a/" class="md-footer__link md-footer__link--next" aria-label="Next: Verilog-A compact models">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Verilog-A compact models
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
