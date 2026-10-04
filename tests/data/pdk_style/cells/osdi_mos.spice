@@ -1,0 +1,28 @@
+* IHP-style device wrappers (synthetic, see models.lib for attribution):
+* the model file is .include'd inside every .subckt, and .if blocks on the
+* instance parameters choose the N (OSDI / Verilog-A) device line.
+.subckt lv_nmos d g s b w=0.35u l=0.13u ng=1 m=1 as=0 rfmode=0 z1=0.34e-6 z2=0.38e-6
+.include osdi_parm.spice
+.if (rfmode == 0)
+    .if (as <= 1e-50)
+        .if (floor(floor(ng/2+0.501)*2+0.001) != ng)
+            Nn d g s b lv_nmos_psp
+              + w=w l=l nf='ng' mult='m'
+              + as='w/ng*(z1+((ng-1)/2)*z2)'
+        .else
+            Nn d g s b lv_nmos_psp
+              + w=w l=l nf='ng' mult='m'
+              + as='w/ng*(2*z1+max(0,(ng-2)/2)*z2)'
+        .endif
+    .else
+        Nn d g s b lv_nmos_psp w=w l=l nf='ng' mult='m' as='as'
+    .endif
+.else
+    Nn d g s b lv_nmos_psp_rf w=w l=l nf='ng' mult='m'
+.endif
+.ends lv_nmos
+
+.subckt lv_pmos d g s b w=0.35u l=0.13u ng=1 m=1
+.include osdi_parm.spice
+Np d g s b lv_pmos_psp w=w l=l nf='ng' mult='m'
+.ends lv_pmos

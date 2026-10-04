@@ -1,0 +1,10 @@
+* shared by every corner: global switches, then the device cells
+.option scale=1.0u
+.param mc_mm_switch=0 mc_pr_switch=0
+.param tox_nom = 4.1e-9
++ tox_mult = '1.0 + 0.02 * mc_pr_switch'
+.func lod_shift(sa, sb) = {sa > 0 && sb > 0 ? 1e-3 / (sa + sb) : 0}
+.include '../cells/nfet_01v8.spice'
+.include '../cells/pfet_01v8.spice'
+.include ../cells/passives.spice
+.include ../cells/nfet_01v8.spice

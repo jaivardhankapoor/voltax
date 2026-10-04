@@ -1,0 +1,4 @@
+* sky130-style legacy file: dot-less include lines
+include "legacy_extra.spice"
+include "missing_esd_model.pm3"
+.param legacy_total = {legacy_r * 2}

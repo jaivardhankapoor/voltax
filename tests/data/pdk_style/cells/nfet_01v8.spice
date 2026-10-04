@@ -1,0 +1,27 @@
+* 1.8 V NMOS: subcircuit wrapper + binned BSIM4 cards (W/L in microns,
+* scaled by .option scale)
+.subckt pdk_nfet_01v8 d g s b l=0.15 w=1 nf=1 mult=1 ad=0 as=0 pd=0 ps=0
++ nrd=0 nrs=0 sa=0 sb=0 sd=0
+.param mm_dvth = 'mc_mm_switch * agauss(0, 0.008, 1) / sqrt(l * w * mult)'
+.param dvth_lod = {lod_shift(sa, sb)}
+msky d g s b pdk_nfet_01v8__model l={l} w={w} nf={nf} ad={ad} as={as} pd={pd}
++ ps={ps} nrd={nrd} nrs={nrs} sa={sa} sb={sb} sd={sd} m={mult}
+.model pdk_nfet_01v8__model.0 nmos level = 54 version = 4.5
++ lmin = 1.5e-07 lmax = 5.0e-07 wmin = 4.2e-07 wmax = 1.0e-06
++ tnom = 30 toxe = {tox_nom * tox_mult} epsrox = 3.9
++ vth0 = {0.47 + corner_dvth_n + mm_dvth + dvth_lod} k1 = 0.55 k2 = -0.02
++ u0 = {0.031 * corner_u0} vsat = 1.1e5 rdsw = 160 nfactor = 1.2
++ cgso = 2.5e-10 cgdo = 2.5e-10 cj = 1.2e-3 mj = 0.4 js = 2e-6
+.model pdk_nfet_01v8__model.1 nmos level = 54 version = 4.5
++ lmin = 1.5e-07 lmax = 5.0e-07 wmin = 1.0e-06 wmax = 1.0e-04
++ tnom = 30 toxe = {tox_nom * tox_mult} epsrox = 3.9
++ vth0 = {0.46 + corner_dvth_n + mm_dvth + dvth_lod} k1 = 0.55 k2 = -0.02
++ u0 = {0.032 * corner_u0} vsat = 1.1e5 rdsw = 160 nfactor = 1.1
++ cgso = 2.5e-10 cgdo = 2.5e-10 cj = 1.2e-3 mj = 0.4 js = 2e-6
+.model pdk_nfet_01v8__model.2 nmos level = 54 version = 4.5
++ lmin = 5.0e-07 lmax = 2.0e-05 wmin = 4.2e-07 wmax = 1.0e-04
++ tnom = 30 toxe = {tox_nom * tox_mult} epsrox = 3.9
++ vth0 = {0.44 + corner_dvth_n + mm_dvth} k1 = 0.6 k2 = -0.03
++ u0 = {0.035 * corner_u0} vsat = 9e4 rdsw = 150 nfactor = 1.0
++ cgso = 2.5e-10 cgdo = 2.5e-10 cj = 1.2e-3 mj = 0.4 js = 2e-6
+.ends pdk_nfet_01v8

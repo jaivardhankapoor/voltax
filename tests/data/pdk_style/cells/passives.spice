@@ -1,0 +1,8 @@
+* diode, sheet resistor and bipolar device models
+.model pdk_diode_pw2nd d level=3 is=1.5e-17 n=1.02 cj=9e-4 mj=0.33 vj=0.7
++ cjsw=1.5e-10 mjsw=0.2 bv=12 ibv=1e-3 area=1 pj=4
+.subckt pdk_res_high_po r0 r1 w=0.35 l=2.0 mult=1
+.param rsh = {2000 * (1 + 0.05 * mc_pr_switch)} dw = -0.02
+R0 r0 r1 r = {rsh * l / (w + dw)} m = {mult}
+.ends pdk_res_high_po
+.model pdk_npn npn level=1 is=1e-17 bf=80 br=1 vaf=60 nf=1.0 rb=50 cje=1e-15

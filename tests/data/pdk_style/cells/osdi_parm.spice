@@ -1,0 +1,4 @@
+* PSP-style Verilog-A model cards (synthetic numbers); type = +1 / -1
+.model lv_nmos_psp psp103va type = +1 level = 103.6 toxo = 2.2e-9 vfbo = -1.1
+.model lv_nmos_psp_rf pspnqs103va type = +1 level = 103.6 toxo = 2.2e-9
+.model lv_pmos_psp psp103va type = -1 level = 103.6 toxo = 2.2e-9 vfbo = -0.9

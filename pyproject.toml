@@ -1,0 +1,82 @@
+[project]
+name = "voltax"
+version = "0.1.0"
+description = "Differentiable SPICE-class circuit simulation in JAX: exact adjoint gradients through DC, transient and AC analyses."
+readme = "README.md"
+authors = [
+    {name = "Jaivardhan Kapoor", email = "jaivardhan.kapoor@gmail.com"},
+]
+license = "MIT"
+requires-python = ">=3.10"
+keywords = [
+    "circuit simulation", "spice", "jax", "differentiable programming",
+    "automatic differentiation", "electronics", "verilog-a", "bsim4",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+dependencies = [
+    "jax>=0.4",
+    "jaxlib",
+    "equinox",
+]
+
+[project.urls]
+Homepage = "https://github.com/jaivardhankapoor/voltax"
+Documentation = "https://voltax.jkapoor.me/"
+Issues = "https://github.com/jaivardhankapoor/voltax/issues"
+Changelog = "https://github.com/jaivardhankapoor/voltax/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+examples = [
+    "matplotlib",
+    "optax",
+    "blackjax",
+    "scikit-learn",
+]
+docs = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26",
+]
+dev = [
+    "ruff",
+    "pytest",
+    "voltax[examples,docs]",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+# l (inductance/length) and I (current) are the natural physics names
+ignore = ["E741", "E743"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"voltax.va" = ["models/NOTICE", "models/cards/*.inc"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["voltax*"]

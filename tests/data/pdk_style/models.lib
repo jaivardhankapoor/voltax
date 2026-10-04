@@ -1,0 +1,27 @@
+* Synthetic open-PDK-style model library for voltax parser tests.
+* Written for this repository (MIT); its *structure* follows the public
+* SkyWater sky130, GF180MCU and IHP SG13G2 ngspice decks (Apache-2.0):
+* corner .lib sections, nested .include files, .option scale, device
+* subcircuit wrappers with geometry parameters and agauss() mismatch,
+* binned BSIM4 (level=54) cards, a PSP (level=103) card, a JUNCAP-style
+* (level=3) diode, a sheet resistor and a bipolar transistor. No foundry
+* model content is reproduced; all numbers are made up.
+
+.lib tt
+.param corner_dvth_n=0 corner_dvth_p=0 corner_u0=1.0
+.include 'corners/common.spice'
+.endl tt
+
+.lib ff
+.param corner_dvth_n=-0.03 corner_dvth_p=-0.03 corner_u0=1.08
+.include 'corners/common.spice'
+.endl ff
+
+.lib ss
+.param corner_dvth_n={0.03} corner_dvth_p='0.03' corner_u0=0.92
+.include "corners/common.spice"
+.endl ss
+
+.lib mc
+.param mc_mm_switch=1
+.endl mc

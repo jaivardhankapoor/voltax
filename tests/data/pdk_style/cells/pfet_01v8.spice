@@ -1,0 +1,7 @@
+* 1.8 V PMOS, IHP-style: a PSP 103 card (no binning) behind a wrapper
+.subckt pdk_pfet_01v8 d g s b l=0.15 w=1 ng=1 m=1
+Mp d g s b pdk_pfet_psp w={w} l={l} m={m}
+.model pdk_pfet_psp pmos level=103 type=-1 tr=27
++ toxo={tox_nom * tox_mult} vfbo=-1.0 nsubo=3e23 uo={0.012 * corner_u0}
++ dphibo={-corner_dvth_p} cfrw=5e-11 lov=10e-9
+.ends pdk_pfet_01v8

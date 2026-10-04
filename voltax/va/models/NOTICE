@@ -1,0 +1,42 @@
+Third-party files in voltax/va/models
+====================================
+
+These files are NOT covered by Voltax's MIT license. Each keeps its own
+license, stated below. Check them before redistributing Voltax.
+
+cards/freepdk45_nmos.inc, cards/freepdk45_pmos.inc
+--------------------------------------------------
+BSIM4 (level 54) model cards "Customized PTM 45 NMOS/PMOS nom" for the
+FreePDK45 process, derived from the Predictive Technology Model (PTM,
+Arizona State University, https://ptm.asu.edu).
+
+* Fetched from https://github.com/VLSIDA/OpenRAM (branch stable),
+  technology/freepdk45/models/tran_models/models_nom/{NMOS,PMOS}_VTG.inc,
+  unmodified apart from a provenance comment at the top.
+* OpenRAM license: BSD 3-Clause, Copyright (c) 2016-2023 Regents of the
+  University of California and The Board of Regents for the Oklahoma
+  Agricultural and Mechanical College (acting for and on behalf of Oklahoma
+  State University).
+
+BSIM4 Verilog-A (bsim4.va) -- NOT included
+------------------------------------------
+The BSIM4 4.8.0 Verilog-A file is not part of this repository or of Voltax
+distributions. `vx.va.load("bsim4")` / `vx.va.fetch("bsim4")` download it on
+first use into ~/.cache/voltax/va/bsim4.va ($XDG_CACHE_HOME respected) from a
+pinned commit, verified by SHA-256 (see voltax/va/fetch.py):
+
+  https://raw.githubusercontent.com/dwarning/VA-Models/
+    6099b4e12e6f66ff530f59b8d01fb909094be85a/code/bsim4/vacode/bsim4.va
+
+or read it from $VOLTAX_BSIM4_VA or an explicit path, vx.va.load(path).
+
+* BSIM4: Copyright 2001 Regents of the University of California (authors:
+  Weidong Liu, Xuemei Xi, Kanyu M. Cao, Hui Wan, Mansun Chan, Chenming Hu;
+  project director Prof. Chenming Hu), BSIM Group, UC Berkeley. The
+  Verilog-A code comes from https://github.com/cogenda/VA-BSIM48 via
+  https://github.com/dwarning/VA-Models.
+* License stated in the file header: Creative Commons
+  Attribution-NonCommercial 4.0 International (CC BY-NC 4.0),
+  https://creativecommons.org/licenses/by-nc/4.0/ -- non-commercial use
+  only, and not compatible with Voltax's MIT license, which is why it is
+  fetched by the user rather than redistributed.

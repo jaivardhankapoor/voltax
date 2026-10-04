@@ -1,0 +1,103 @@
+site_name: Voltax
+site_description: Differentiable circuit simulation on JAX
+site_url: https://voltax.jkapoor.me/
+repo_url: https://github.com/jaivardhankapoor/voltax
+repo_name: jaivardhankapoor/voltax
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: assets/voltax.svg
+  favicon: assets/voltax.svg
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle: {icon: material/weather-night, name: Dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle: {icon: material/weather-sunny, name: Light mode}
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - tables
+  - toc: {permalink: true}
+  - pymdownx.arithmatex: {generic: true}
+  - pymdownx.details
+  - pymdownx.highlight: {anchor_linenums: true}
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets: {base_path: ["."], check_paths: true}
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
+          options:
+            docstring_style: google
+            # docstrings document grouped arguments ("rtol, atol: ..."), which
+            # recent griffe versions flag as unknown/untyped parameters
+            docstring_options:
+              warn_unknown_params: false
+              warn_missing_types: false
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            merge_init_into_class: true
+            show_signature_annotations: true
+            separate_signature: true
+            filters: ["!^_"]
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Concepts:
+      - Building circuits: concepts/circuits.md
+      - The circuit equations: concepts/formulation.md
+      - Analyses: concepts/analyses.md
+      - Measurements: concepts/measurements.md
+      - Gradients and optimization: concepts/gradients.md
+      - Writing your own element: concepts/custom-elements.md
+      - SPICE netlists: concepts/netlists.md
+      - Verilog-A compact models: concepts/verilog-a.md
+  - Device models: elements.md
+  - Examples:
+      - Overview: examples/index.md
+      - 01. RC fitting: examples/01_rc_fitting.md
+      - 02. Netlist CMOS inverter: examples/02_netlist_cmos_inverter.md
+      - 03. Op-amp filter design: examples/03_opamp_filter_design.md
+      - 04. 4-bit adder: examples/04_adder_4bit.md
+      - 05. Power grid optimization: examples/05_power_grid_opt.md
+      - 06. Topology discovery: examples/06_topology_discovery.md
+      - 07. Logic design space: examples/07_logic_design_space.md
+      - 08. Ring oscillator inference: examples/08_ring_osc_inference.md
+      - 09. RC SMC inference: examples/09_rc_smc_inference.md
+      - 10. Custom element: examples/10_custom_element.md
+      - 11. MNIST analog CNN: examples/11_mnist_analog_cnn.md
+      - 12. Energy-delay optimization: examples/12_energy_delay_optimization.md
+      - 13. Battery equivalent circuit: examples/13_battery_ecm.md
+  - API reference:
+      - Circuits: api/circuits.md
+      - Analyses: api/analyses.md
+      - Measurements: api/measure.md
+      - Elements: api/elements.md
+      - Signals: api/signals.md
+      - Library: api/library.md
+      - Verilog-A: api/va.md
+  - Development: development.md
